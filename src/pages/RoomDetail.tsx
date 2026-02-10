@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { Configuration, Room, Wall, WallElement } from '../types'
+import { Configuration, Room, WallElement } from '../types'
 import { getConfiguration, saveConfiguration } from '../utils/storage'
 import { formatArea, formatLength, calculateWallArea } from '../utils/calculations'
 

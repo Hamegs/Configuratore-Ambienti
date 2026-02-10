@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { Configuration, Room, RoomType } from '../types'
-import { getConfiguration, saveConfiguration } from '../utils/storage'
+import { getConfiguration } from '../utils/storage'
 import { formatArea } from '../utils/calculations'
 
 const roomTypeColors: Record<RoomType, string> = {
