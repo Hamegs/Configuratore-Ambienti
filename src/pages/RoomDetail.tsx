@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { Configuration, Room, WallElement } from '../types'
+import { Configuration, Room, WallElement, RoomElement } from '../types'
 import { getConfiguration, saveConfiguration } from '../utils/storage'
 import { formatArea, formatLength, calculateWallArea } from '../utils/calculations'
 
@@ -131,6 +131,85 @@ export default function RoomDetail() {
     setRoom({ ...room })
   }
 
+  const handleAddFloorElement = (elementType: RoomElement['type']) => {
+    if (!room || !config) return
+
+    const defaultDimensions: Record<RoomElement['type'], { width: number; height: number }> = {
+      'shower': { width: 0.9, height: 0.9 },
+      'shower-base': { width: 0.9, height: 0.9 },
+      'bathtub': { width: 1.7, height: 0.8 },
+      'sink': { width: 0.6, height: 0.5 },
+      'toilet': { width: 0.5, height: 0.7 },
+      'bidet': { width: 0.4, height: 0.6 }
+    }
+
+    const newFloorElement: RoomElement = {
+      id: `floor-el-${Date.now()}`,
+      type: elementType,
+      position: { x: 0, y: 0 },
+      dimensions: defaultDimensions[elementType]
+    }
+
+    room.elements.push(newFloorElement)
+
+    const updatedRooms = config.rooms.map(r =>
+      r.id === room.id ? room : r
+    )
+
+    const updatedConfig = {
+      ...config,
+      rooms: updatedRooms,
+      updatedAt: new Date().toISOString()
+    }
+
+    saveConfiguration(updatedConfig)
+    setConfig(updatedConfig)
+    setRoom({ ...room })
+  }
+
+  const handleRemoveFloorElement = (elementId: string) => {
+    if (!room || !config) return
+
+    room.elements = room.elements.filter(e => e.id !== elementId)
+
+    const updatedRooms = config.rooms.map(r =>
+      r.id === room.id ? room : r
+    )
+
+    const updatedConfig = {
+      ...config,
+      rooms: updatedRooms,
+      updatedAt: new Date().toISOString()
+    }
+
+    saveConfiguration(updatedConfig)
+    setConfig(updatedConfig)
+    setRoom({ ...room })
+  }
+
+  const handleUpdateFloorElement = (elementId: string, field: 'width' | 'height', value: number) => {
+    if (!room || !config) return
+
+    const element = room.elements.find(e => e.id === elementId)
+    if (!element) return
+
+    element.dimensions[field] = value
+
+    const updatedRooms = config.rooms.map(r =>
+      r.id === room.id ? room : r
+    )
+
+    const updatedConfig = {
+      ...config,
+      rooms: updatedRooms,
+      updatedAt: new Date().toISOString()
+    }
+
+    saveConfiguration(updatedConfig)
+    setConfig(updatedConfig)
+    setRoom({ ...room })
+  }
+
   if (!config || !room) {
     return (
       <div className="container mx-auto px-4 py-12">
@@ -185,7 +264,121 @@ export default function RoomDetail() {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow-lg p-6">
+            <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">
+                Elementi Pavimento
+              </h2>
+              <div className="mb-4">
+                <p className="text-sm text-gray-600 mb-3">Aggiungi elementi al pavimento:</p>
+                <div className="grid grid-cols-3 md:grid-cols-6 gap-2">
+                  <button
+                    onClick={() => handleAddFloorElement('shower-base')}
+                    className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-xs font-semibold"
+                  >
+                    Piatto Doccia
+                  </button>
+                  <button
+                    onClick={() => handleAddFloorElement('shower')}
+                    className="px-3 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition text-xs font-semibold"
+                  >
+                    Box Doccia
+                  </button>
+                  <button
+                    onClick={() => handleAddFloorElement('bathtub')}
+                    className="px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition text-xs font-semibold"
+                  >
+                    Vasca
+                  </button>
+                  <button
+                    onClick={() => handleAddFloorElement('sink')}
+                    className="px-3 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition text-xs font-semibold"
+                  >
+                    Lavabo
+                  </button>
+                  <button
+                    onClick={() => handleAddFloorElement('toilet')}
+                    className="px-3 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition text-xs font-semibold"
+                  >
+                    WC
+                  </button>
+                  <button
+                    onClick={() => handleAddFloorElement('bidet')}
+                    className="px-3 py-2 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition text-xs font-semibold"
+                  >
+                    Bidet
+                  </button>
+                </div>
+              </div>
+
+              {room.elements.length > 0 && (
+                <div className="border-t pt-4">
+                  <h3 className="font-semibold text-gray-900 mb-3">
+                    Elementi Configurati ({room.elements.length})
+                  </h3>
+                  <div className="space-y-3">
+                    {room.elements.map((element) => {
+                      const elementLabels: Record<RoomElement['type'], string> = {
+                        'shower': 'Box Doccia',
+                        'shower-base': 'Piatto Doccia',
+                        'bathtub': 'Vasca',
+                        'sink': 'Lavabo',
+                        'toilet': 'WC',
+                        'bidet': 'Bidet'
+                      }
+                      
+                      return (
+                        <div key={element.id} className="bg-gray-50 p-3 rounded-lg">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="font-medium text-gray-900">
+                              {elementLabels[element.type]}
+                            </span>
+                            <button
+                              onClick={() => handleRemoveFloorElement(element.id)}
+                              className="text-red-600 hover:text-red-700 text-sm font-semibold"
+                            >
+                              Rimuovi
+                            </button>
+                          </div>
+                          <div className="grid grid-cols-2 gap-2">
+                            <div>
+                              <label className="block text-xs text-gray-600 mb-1">
+                                Larghezza (m)
+                              </label>
+                              <input
+                                type="number"
+                                step="0.1"
+                                min="0.1"
+                                value={element.dimensions.width}
+                                onChange={(e) => handleUpdateFloorElement(element.id, 'width', parseFloat(e.target.value) || 0.1)}
+                                className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs text-gray-600 mb-1">
+                                Profondità (m)
+                              </label>
+                              <input
+                                type="number"
+                                step="0.1"
+                                min="0.1"
+                                value={element.dimensions.height}
+                                onChange={(e) => handleUpdateFloorElement(element.id, 'height', parseFloat(e.target.value) || 0.1)}
+                                className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                              />
+                            </div>
+                          </div>
+                          <p className="text-xs text-gray-600 mt-2">
+                            Area: {formatArea(element.dimensions.width * element.dimensions.height)}
+                          </p>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="bg-white rounded-xl shadow-lg p-6">{" "}
               <h2 className="text-xl font-bold text-gray-900 mb-4">
                 Seleziona Parete
               </h2>

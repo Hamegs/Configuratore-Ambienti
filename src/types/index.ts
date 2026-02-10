@@ -42,7 +42,7 @@ export type RoomType =
 
 export interface RoomElement {
   id: string;
-  type: 'shower' | 'bathtub' | 'sink' | 'toilet' | 'bidet';
+  type: 'shower' | 'bathtub' | 'sink' | 'toilet' | 'bidet' | 'shower-base';
   position: Point;
   dimensions: { width: number; height: number };
 }
