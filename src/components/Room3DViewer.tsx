@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Text } from '@react-three/drei'
 import * as THREE from 'three'
@@ -24,7 +24,7 @@ interface WallMeshProps {
   label: string;
 }
 
-const WallMesh = ({ wallId, position, width, height, rotation, isSelected, onClick, texture, label }: WallMeshProps) => {
+const WallMesh = ({ position, width, height, rotation, isSelected, onClick, texture, label }: WallMeshProps) => {
   const [hovered, setHovered] = useState(false)
   
   const getColorByTexture = (tex?: ResinTexture): string => {

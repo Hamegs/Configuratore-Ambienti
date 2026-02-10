@@ -1,4 +1,4 @@
-import { ResinTextureSpec, ResinTexture } from '../types/resin'
+import { ResinTexture } from '../types/resin'
 import { getApplicableTexturesForZone, calculateConsumption } from '../data/resinTextures'
 import { formatArea } from '../utils/calculations'
 
