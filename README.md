@@ -1,16 +1,33 @@
-# Configuratore Ambienti
+# Configuratore Ambienti - Sistema Resine 3D
 
-Software configuratore per ambienti domestici - Progetta e configura i tuoi spazi in modo semplice e intuitivo.
+Software professionale per la configurazione di ambienti domestici con resine decorative. Progetta, configura e preventiva i tuoi spazi in modo semplice e intuitivo con visualizzazione 3D.
 
-## Funzionalità
+## 🎨 Funzionalità Principali
 
+### Sistema Resine Professionale
+- **5 Texture Resine**: NATURAL, SENSE, DEKORA, LAMINE, CORLITE
+- **Regole Applicabilità Automatiche**: Il sistema mostra solo le texture applicabili per ogni zona
+  - NATURAL, SENSE: Pavimento + Pareti + Zona Doccia ✅
+  - DEKORA: Pavimento + Pareti (NO Doccia) ✅
+  - LAMINE: Pavimento + Zona Doccia (NO Pareti) ✅
+  - CORLITE: Solo Pavimento (NO Doccia, NO Pareti) ✅
+- **Calcolo Consumi Automatico**: kg/mq per ogni fase di posa (fondo, finitura, protettivi)
+- **Preventivo Istantaneo**: Costo stimato per superficie con dettaglio prodotti
+- **Schede Tecniche Complete**: Fasi di posa, consumi, colori disponibili
+
+### Visualizzazione 3D Interattiva
+- **Vista 3D Navigabile**: Ruota, zoom e naviga nella stanza con Three.js
+- **Selezione Superfici**: Click su pareti, pavimento, zona doccia per configurare
+- **Preview Texture in Tempo Reale**: Vedi la texture applicata sulla superficie 3D
+- **Controlli Intuitivi**: Mouse/trackpad per navigazione completa
+
+### Funzionalità Classiche
 - **Template Predefiniti**: Scegli tra template di appartamenti predefiniti (bilocale, trilocale, ecc.)
 - **Visualizzazione Pianta**: Visualizza la pianta dell'appartamento con stanze colorate
 - **Selezione Stanze**: Clicca su una stanza per visualizzare i dettagli e accedere alla configurazione
 - **Configurazione Pareti**: Modifica dimensioni delle pareti e calcola automaticamente i metri quadri
-- **Elementi Configurabili**: Aggiungi finestre, porte, nicchie e altri elementi alle pareti
+- **Elementi Configurabili**: Aggiungi finestre, porte, nicchie, piatto doccia e altri elementi
 - **Calcolo Automatico**: Calcolo automatico delle superfici di pareti, pavimenti e elementi
-- **Catalogo Materiali**: Sfoglia il catalogo e seleziona materiali e prodotti per ogni stanza
 - **Salvataggio Locale**: Salva le tue configurazioni nel browser (localStorage)
 - **Export/Import**: Esporta le configurazioni in formato JSON e importale quando necessario
 - **PWA**: Applicazione web progressiva installabile su desktop e mobile

@@ -233,7 +233,15 @@ export default function RoomDetail() {
           >
             ← Torna alla Pianta
           </button>
-          <h1 className="text-3xl font-bold text-gray-900">{room.name}</h1>
+          <div className="flex items-center justify-between">
+            <h1 className="text-3xl font-bold text-gray-900">{room.name}</h1>
+            <button
+              onClick={() => navigate(`/room3d/${configId}/${roomId}`)}
+              className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:from-purple-700 hover:to-blue-700 transition font-semibold shadow-lg"
+            >
+              🎨 Vista 3D Resine
+            </button>
+          </div>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-6">
